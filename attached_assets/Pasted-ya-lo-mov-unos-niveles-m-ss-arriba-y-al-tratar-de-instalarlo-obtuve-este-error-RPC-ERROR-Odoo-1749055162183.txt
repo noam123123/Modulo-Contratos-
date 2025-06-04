@@ -1,0 +1,76 @@
+ya lo moví... unos niveles máss arriba
+
+y al tratar de instalarlo obtuve este error:
+
+RPC_ERROR
+Odoo Server Error
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 714, in resolve_depends
+    field = Model._fields[fname]
+KeyError: 'type'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_http.py", line 237, in _dispatch
+    result = request.dispatch()
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 687, in dispatch
+    result = self._call_function(**self.params)
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 359, in _call_function
+    return checked_call(self.db, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/service/model.py", line 94, in wrapper
+    return f(dbname, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 348, in checked_call
+    result = self.endpoint(*a, **kw)
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 916, in _call_
+    return self.method(*args, **kw)
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 535, in response_wrap
+    response = f(*args, **kw)
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/controllers/main.py", line 1351, in call_button
+    action = self._call_kw(model, method, args, kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/addons/web/controllers/main.py", line 1339, in _call_kw
+    return call_kw(request.env[model], method, args, kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 464, in call_kw
+    result = _call_kw_multi(method, model, args, kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 451, in _call_kw_multi
+    result = method(recs, *args, **kwargs)
+  File "<decorator-gen-74>", line 2, in button_immediate_install
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py", line 74, in check_and_log
+    return method(self, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py", line 483, in button_immediate_install
+    return self._button_immediate_function(type(self).button_install)
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_module.py", line 600, in _button_immediate_function
+    registry = modules.registry.Registry.new(self._cr.dbname, update_module=True)
+  File "/usr/lib/python3/dist-packages/odoo/modules/registry.py", line 87, in new
+    odoo.modules.load_modules(registry, force_demo, status, update_module)
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 474, in load_modules
+    processed_modules += load_marked_modules(cr, graph,
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 363, in load_marked_modules
+    loaded, processed = load_module_graph(
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 199, in load_module_graph
+    registry.init_models(cr, model_names, {'module': package.name}, new_install)
+  File "/usr/lib/python3/dist-packages/odoo/modules/registry.py", line 439, in init_models
+    func()
+  File "/usr/lib/python3/dist-packages/odoo/addons/base/models/ir_model.py", line 45, in mark_modified
+    records.modified(fnames)
+  File "/usr/lib/python3/dist-packages/odoo/models.py", line 5990, in modified
+    node = self.pool.field_triggers.get(self._fields[fname])
+  File "/usr/lib/python3/dist-packages/odoo/tools/func.py", line 26, in _get_
+    value = self.fget(obj)
+  File "/usr/lib/python3/dist-packages/odoo/modules/registry.py", line 337, in field_triggers
+    dependencies[field] = OrderedSet(field.resolve_depends(self))
+  File "/usr/lib/python3/dist-packages/odoo/tools/misc.py", line 1043, in _init_
+    self._map = dict.fromkeys(elems)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 716, in resolve_depends
+    raise ValueError(
+Exception
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 643, in _handle_exception
+    return super(JsonRequest, self)._handle_exception(exception)
+  File "/usr/lib/python3/dist-packages/odoo/http.py", line 301, in _handle_exception
+    raise exception.with_traceback(None) from new_cause
+ValueError: Wrong @depends on 'None' (compute method of field contract.general.invoice_ids). Dependency field 'type' not found in model account.move.
