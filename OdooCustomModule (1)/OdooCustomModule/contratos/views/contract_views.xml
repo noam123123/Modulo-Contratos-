@@ -1,0 +1,262 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista formulario para contratos -->
+    <record id="view_contract_form" model="ir.ui.view">
+        <field name="name">contract.general.form</field>
+        <field name="model">contract.general</field>
+        <field name="arch" type="xml">
+            <form string="Contrato">
+                <header>
+                    <button name="action_negotiate" type="object" 
+                            string="En Negociación" class="btn-warning"
+                            states="new"/>
+                    <button name="action_validate" type="object" 
+                            string="Hacer Vigente" class="btn-success"
+                            states="new,negotiation"/>
+                    <button name="action_renew" type="object" 
+                            string="Renovar" class="btn-primary"
+                            states="valid"/>
+                    <button name="action_terminate" type="object" 
+                            string="Finiquitar" class="btn-secondary"
+                            states="valid,renewed"/>
+                    <button name="action_cancel" type="object" 
+                            string="Cancelar" class="btn-danger"
+                            states="new,negotiation"/>
+                    <button name="generate_contract_pdf" type="object" 
+                            string="Generar PDF" class="btn-info"
+                            states="valid,renewed,terminated"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="new,negotiation,valid,renewed,terminated"/>
+                </header>
+                
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoices" type="object" 
+                                class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="invoice_count" widget="statinfo" 
+                                   string="Facturas"/>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Empresa Cliente">
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="contract_manager_id"/>
+                        </group>
+                        <group string="Información del Contrato">
+                            <field name="contract_type_id"/>
+                            <field name="template_id"/>
+                            <field name="contract_value"/>
+                        </group>
+                    </group>
+
+                    <group string="Representante Legal / Firmante">
+                        <group>
+                            <field name="legal_contact_id" 
+                                   domain="[('parent_id', '=', partner_id), ('is_company', '=', False)]"
+                                   context="{'default_parent_id': partner_id, 'default_is_legal_representative': True}"/>
+                            <field name="legal_representative_name"/>
+                            <field name="legal_representative_position"/>
+                            <field name="legal_representative_hierarchy"/>
+                        </group>
+                        <group>
+                            <field name="legal_representative_id_number"/>
+                            <field name="legal_representative_email"/>
+                            <field name="legal_representative_phone"/>
+                            <field name="legal_representative_address"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Vigencia del Contrato">
+                            <field name="date_start"/>
+                            <field name="duration_months"/>
+                            <field name="date_end"/>
+                            <field name="auto_renewal"/>
+                        </group>
+                        <group string="Renovaciones">
+                            <field name="renewal_count" readonly="1"/>
+                            <field name="last_renewal_date" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Descripción del Servicio">
+                            <field name="service_description" nolabel="1"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Información Financiera">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="monthly_fee"/>
+                            <field name="setup_fee"/>
+                            <field name="deposit"/>
+                        </group>
+                        <group string="Facturación">
+                            <field name="billing_cycle"/>
+                            <field name="payment_method"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Líneas del Contrato">
+                            <field name="contract_line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="subtotal"/>
+                                    <field name="device_imei"/>
+                                    <field name="device_serial"/>
+                                    <field name="sim_number"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Términos Especiales">
+                            <field name="special_conditions"/>
+                        </page>
+                        
+                        <page string="Facturación">
+                            <group>
+                                <field name="sale_order_id"/>
+                            </group>
+                            <field name="invoice_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="invoice_date"/>
+                                    <field name="amount_total"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Notificaciones">
+                            <group>
+                                <group string="Estado de Notificaciones">
+                                    <field name="notification_2_months" readonly="1"/>
+                                    <field name="notification_expiry" readonly="1"/>
+                                    <field name="notification_renewal" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Notas Internas">
+                            <field name="internal_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Vista lista para contratos -->
+    <record id="view_contract_tree" model="ir.ui.view">
+        <field name="name">contract.general.tree</field>
+        <field name="model">contract.general</field>
+        <field name="arch" type="xml">
+            <tree string="Contratos" decoration-success="state=='valid'" 
+                  decoration-info="state=='renewed'" decoration-warning="state=='negotiation'" 
+                  decoration-muted="state=='terminated'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="legal_representative_name"/>
+                <field name="contract_type_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="contract_value"/>
+                <field name="auto_renewal"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda -->
+    <record id="view_contract_search" model="ir.ui.view">
+        <field name="name">contract.general.search</field>
+        <field name="model">contract.general</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Contratos">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="legal_representative_name"/>
+                <field name="contract_type_id"/>
+                <field name="contract_manager_id"/>
+                
+                <filter string="Nuevos" name="new" domain="[('state', '=', 'new')]"/>
+                <filter string="En Negociación" name="negotiation" domain="[('state', '=', 'negotiation')]"/>
+                <filter string="Vigentes" name="valid" domain="[('state', '=', 'valid')]"/>
+                <filter string="Renovados" name="renewed" domain="[('state', '=', 'renewed')]"/>
+                <filter string="Autorenovables" name="auto_renewal" domain="[('auto_renewal', '=', True)]"/>
+                
+                <separator/>
+                <filter string="Vencen este mes" name="expiring_month" 
+                        domain="[('date_end', '&gt;=', (context_today().replace(day=1)).strftime('%Y-%m-%d')), 
+                                ('date_end', '&lt;', ((context_today().replace(day=1) + relativedelta(months=1)).strftime('%Y-%m-%d')))]"/>
+                <filter string="Vencen en 2 meses" name="expiring_2_months" 
+                        domain="[('date_end', '&gt;=', (context_today() + relativedelta(months=2, day=1)).strftime('%Y-%m-%d')), 
+                                ('date_end', '&lt;', (context_today() + relativedelta(months=3, day=1)).strftime('%Y-%m-%d'))]"/>
+                
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Tipo de Contrato" name="group_type" context="{'group_by': 'contract_type_id'}"/>
+                    <filter string="Cliente" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Responsable" name="group_manager" context="{'group_by': 'contract_manager_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Acción para todos los contratos -->
+    <record id="action_contract_list" model="ir.actions.act_window">
+        <field name="name">Contratos</field>
+        <field name="res_model">contract.general</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_contract_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crear el primer contrato!
+            </p>
+            <p>
+                Los contratos permiten gestionar todos los servicios
+                de su empresa de manera centralizada con empresas clientes.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Acción para contratos vigentes -->
+    <record id="action_contract_valid" model="ir.actions.act_window">
+        <field name="name">Contratos Vigentes</field>
+        <field name="res_model">contract.general</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', 'in', ['valid', 'renewed'])]</field>
+        <field name="search_view_id" ref="view_contract_search"/>
+    </record>
+
+    <!-- Acción para contratos que vencen pronto -->
+    <record id="action_contract_expiring" model="ir.actions.act_window">
+        <field name="name">Contratos por Vencer</field>
+        <field name="res_model">contract.general</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', 'in', ['valid', 'renewed']), ('date_end', '&lt;=', (context_today() + relativedelta(months=2)).strftime('%Y-%m-%d'))]</field>
+        <field name="search_view_id" ref="view_contract_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,418 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Plantilla Básica para Servicios GPS -->
+        <record id="template_basic_gps" model="contract.template">
+            <field name="name">Contrato GPS Básico</field>
+            <field name="code">GPS_BASIC</field>
+            <field name="description">Plantilla estándar para servicios GPS básicos</field>
+            <field name="sequence">10</field>
+            <field name="logo_size">medium</field>
+            <field name="logo_position">center</field>
+            <field name="primary_color">#1f2937</field>
+            <field name="secondary_color">#6b7280</field>
+            <field name="accent_color">#3b82f6</field>
+            <field name="text_color">#374151</field>
+            <field name="background_color">#ffffff</field>
+            <field name="font_family">Arial, sans-serif</field>
+            <field name="font_size_base">12</field>
+            
+            <field name="header_content"><![CDATA[
+                <div class="contract-header">
+                    <h1>CONTRATO DE SERVICIOS GPS</h1>
+                    <p class="subtitle">Entre ${object.env.company.name} y ${object.partner_id.name}</p>
+                    <div class="contract-number">Contrato No. ${object.name}</div>
+                </div>
+            ]]></field>
+            
+            <field name="introduction_content"><![CDATA[
+                <div class="contract-intro">
+                    <p>Por medio del presente documento se establece un contrato de servicios de monitoreo GPS entre las siguientes partes:</p>
+                    
+                    <div class="parties">
+                        <div class="party">
+                            <h3>EL PROVEEDOR:</h3>
+                            <p><strong>${object.env.company.name}</strong></p>
+                            <p>Cédula Jurídica: ${object.env.company.vat or 'No especificado'}</p>
+                            <p>Dirección: ${object.env.company.street or ''} ${object.env.company.city or ''}</p>
+                            <p>Teléfono: ${object.env.company.phone or ''}</p>
+                            <p>Email: ${object.env.company.email or ''}</p>
+                        </div>
+                        
+                        <div class="party">
+                            <h3>EL CLIENTE:</h3>
+                            <p><strong>${object.partner_id.name}</strong></p>
+                            <p>Identificación: ${object.partner_id.vat or 'No especificado'}</p>
+                            <p>Dirección: ${object.partner_id.contact_address}</p>
+                            <p>Teléfono: ${object.partner_id.phone or ''}</p>
+                            <p>Email: ${object.partner_id.email or ''}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="legal-representative">
+                        <h3>REPRESENTANTE LEGAL DEL CLIENTE:</h3>
+                        <p><strong>Nombre:</strong> ${object.legal_representative_name}</p>
+                        <p><strong>Cargo:</strong> ${object.legal_representative_position}</p>
+                        <p><strong>Cédula:</strong> ${object.legal_representative_id_number}</p>
+                        <p><strong>Email:</strong> ${object.legal_representative_email}</p>
+                        <p><strong>Teléfono:</strong> ${object.legal_representative_phone or 'No especificado'}</p>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="terms_content"><![CDATA[
+                <div class="contract-terms">
+                    <h2>TÉRMINOS Y CONDICIONES</h2>
+                    
+                    <h3>CLÁUSULA PRIMERA: OBJETO DEL CONTRATO</h3>
+                    <p>El presente contrato tiene por objeto la prestación de servicios de monitoreo GPS que incluye: ${object.service_description}.</p>
+                    
+                    <h3>CLÁUSULA SEGUNDA: VIGENCIA</h3>
+                    <p>El presente contrato tendrá una vigencia de <strong>${object.duration_months} meses</strong>, iniciando el <strong>${object.date_start}</strong> y finalizando el <strong>${object.date_end}</strong>.</p>
+                    
+                    % if object.auto_renewal:
+                    <div class="info-box">
+                        <p><strong>RENOVACIÓN AUTOMÁTICA:</strong> Este contrato se renovará automáticamente por períodos iguales al inicial, salvo notificación escrita con treinta (30) días de anticipación por cualquiera de las partes.</p>
+                    </div>
+                    % else:
+                    <div class="warning-box">
+                        <p><strong>SIN RENOVACIÓN AUTOMÁTICA:</strong> Este contrato NO se renovará automáticamente. Las partes deberán gestionar una renovación manual antes del vencimiento.</p>
+                    </div>
+                    % endif
+                    
+                    <h3>CLÁUSULA TERCERA: OBLIGACIONES DEL PROVEEDOR</h3>
+                    <ul>
+                        <li>Proporcionar el servicio de monitoreo GPS las 24 horas del día, los 365 días del año.</li>
+                        <li>Mantener la plataforma de monitoreo actualizada y funcional.</li>
+                        <li>Brindar soporte técnico durante horario laboral.</li>
+                        <li>Garantizar la privacidad y seguridad de los datos del cliente.</li>
+                        <li>Proporcionar reportes periódicos según lo acordado.</li>
+                    </ul>
+                    
+                    <h3>CLÁUSULA CUARTA: OBLIGACIONES DEL CLIENTE</h3>
+                    <ul>
+                        <li>Realizar los pagos en las fechas establecidas.</li>
+                        <li>Proporcionar información veraz y actualizada.</li>
+                        <li>Mantener en buen estado los equipos GPS instalados.</li>
+                        <li>Notificar inmediatamente cualquier problema técnico.</li>
+                        <li>Cumplir con las normativas legales aplicables al uso de GPS.</li>
+                    </ul>
+                    
+                    <h3>CLÁUSULA QUINTA: TERMINACIÓN DEL CONTRATO</h3>
+                    <p>El presente contrato podrá darse por terminado en los siguientes casos:</p>
+                    <ul>
+                        <li>Por vencimiento del plazo establecido.</li>
+                        <li>Por incumplimiento de cualquiera de las partes.</li>
+                        <li>Por mutuo acuerdo entre las partes.</li>
+                        <li>Por causas de fuerza mayor debidamente comprobadas.</li>
+                    </ul>
+                </div>
+            ]]></field>
+            
+            <field name="financial_details_content"><![CDATA[
+                <div class="financial-details">
+                    <h2>DETALLES FINANCIEROS</h2>
+                    
+                    <table class="financial-table">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Valor</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Valor Total del Contrato</strong></td>
+                                <td><strong>${object.currency_id.symbol} ${'{:,.2f}'.format(object.contract_value)}</strong></td>
+                                <td>Por ${object.duration_months} meses</td>
+                            </tr>
+                            % if object.monthly_fee:
+                            <tr>
+                                <td>Tarifa Mensual</td>
+                                <td>${object.currency_id.symbol} ${'{:,.2f}'.format(object.monthly_fee)}</td>
+                                <td>Pago ${object.get_billing_cycle_display().lower()}</td>
+                            </tr>
+                            % endif
+                            % if object.setup_fee:
+                            <tr>
+                                <td>Costo de Configuración/Instalación</td>
+                                <td>${object.currency_id.symbol} ${'{:,.2f}'.format(object.setup_fee)}</td>
+                                <td>Pago único al inicio</td>
+                            </tr>
+                            % endif
+                            % if object.deposit:
+                            <tr>
+                                <td>Depósito de Garantía</td>
+                                <td>${object.currency_id.symbol} ${'{:,.2f}'.format(object.deposit)}</td>
+                                <td>Reembolsable al término</td>
+                            </tr>
+                            % endif
+                        </tbody>
+                    </table>
+                    
+                    <div class="payment-info">
+                        <h3>INFORMACIÓN DE PAGO</h3>
+                        <p><strong>Ciclo de Facturación:</strong> ${object.get_billing_cycle_display()}</p>
+                        <p><strong>Método de Pago Preferido:</strong> ${object.get_payment_method_display()}</p>
+                        <p><strong>Moneda:</strong> ${object.currency_id.name} (${object.currency_id.symbol})</p>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <p><strong>IMPORTANTE:</strong> Los pagos deberán realizarse dentro de los primeros 10 días de cada período de facturación. El atraso en los pagos puede resultar en la suspensión temporal del servicio.</p>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="special_conditions_content"><![CDATA[
+                <div class="special-conditions">
+                    % if object.special_conditions:
+                    <h2>CONDICIONES ESPECIALES</h2>
+                    ${object.special_conditions}
+                    % endif
+                    
+                    <h2>DISPOSICIONES LEGALES</h2>
+                    
+                    <h3>PROTECCIÓN DE DATOS PERSONALES</h3>
+                    <p>Conforme a la Ley de Protección de la Persona frente al tratamiento de sus datos personales N° 8968, el proveedor se compromete a:</p>
+                    <ul>
+                        <li>Tratar los datos personales únicamente para los fines establecidos en este contrato.</li>
+                        <li>Implementar medidas de seguridad adecuadas para proteger la información.</li>
+                        <li>No transferir datos a terceros sin autorización expresa del cliente.</li>
+                        <li>Permitir al cliente ejercer sus derechos de acceso, rectificación y cancelación.</li>
+                    </ul>
+                    
+                    <h3>CUMPLIMIENTO LEGAL</h3>
+                    <p>Este contrato se rige por las leyes de la República de Costa Rica, específicamente:</p>
+                    <ul>
+                        <li>Código de Comercio</li>
+                        <li>Ley de Protección al Consumidor N° 7472</li>
+                        <li>Ley de Protección de Datos Personales N° 8968</li>
+                        <li>Reglamento de Telecomunicaciones</li>
+                    </ul>
+                    
+                    <h3>RESOLUCIÓN DE CONFLICTOS</h3>
+                    <p>Cualquier controversia que surja de este contrato será resuelta mediante:</p>
+                    <ol>
+                        <li>Negociación directa entre las partes</li>
+                        <li>Mediación en el Centro de Conciliación y Arbitraje</li>
+                        <li>Tribunales competentes de Costa Rica</li>
+                    </ol>
+                </div>
+            ]]></field>
+            
+            <field name="signature_content"><![CDATA[
+                <div class="signatures">
+                    <h2>FIRMAS Y ACEPTACIÓN</h2>
+                    
+                    <p>Las partes manifiestan que han leído, entendido y aceptado todos los términos y condiciones establecidos en el presente contrato, y proceden a firmarlo en señal de conformidad.</p>
+                    
+                    <div class="signature-area">
+                        <div class="signature-box">
+                            <p><strong>POR EL PROVEEDOR:</strong></p>
+                            <div class="signature-line"></div>
+                            <p><strong>${object.env.company.name}</strong></p>
+                            <p>Representante Legal</p>
+                            <p>Cédula: ${object.env.company.vat}</p>
+                        </div>
+                        
+                        <div class="signature-box">
+                            <p><strong>POR EL CLIENTE:</strong></p>
+                            <div class="signature-line"></div>
+                            <p><strong>${object.legal_representative_name}</strong></p>
+                            <p>${object.legal_representative_position}</p>
+                            <p>Cédula: ${object.legal_representative_id_number}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contract-footer">
+                        <p><strong>Lugar y fecha:</strong> San José, Costa Rica, ${object.date_start}</p>
+                    </div>
+                    
+                    <div class="witness-section">
+                        <h3>TESTIGOS</h3>
+                        <div class="signature-area">
+                            <div class="signature-box">
+                                <p><strong>TESTIGO 1:</strong></p>
+                                <div class="signature-line"></div>
+                                <p>Nombre: _________________________</p>
+                                <p>Cédula: _________________________</p>
+                            </div>
+                            
+                            <div class="signature-box">
+                                <p><strong>TESTIGO 2:</strong></p>
+                                <div class="signature-line"></div>
+                                <p>Nombre: _________________________</p>
+                                <p>Cédula: _________________________</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="footer_content"><![CDATA[
+                <div class="contract-footer-info">
+                    <div class="document-info">
+                        <p><strong>Documento generado automáticamente</strong></p>
+                        <p>Fecha de generación: ${datetime.now().strftime('%d/%m/%Y a las %H:%M')}</p>
+                        <p>Contrato No. ${object.name} - ${object.env.company.name}</p>
+                        <p>Sistema de Gestión de Contratos v1.0</p>
+                    </div>
+                    
+                    <div class="legal-footer">
+                        <p class="small-text">Este documento es válido sin firma autógrafa conforme al artículo 3 de la Ley de Certificados, Firmas Digitales y Documentos Electrónicos N° 8454.</p>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="custom_css"><![CDATA[
+                .subtitle {
+                    font-size: 16px;
+                    color: #6b7280;
+                    margin: 10px 0;
+                }
+                
+                .contract-number {
+                    background-color: #f3f4f6;
+                    padding: 8px 16px;
+                    border-radius: 20px;
+                    display: inline-block;
+                    font-weight: bold;
+                    margin-top: 10px;
+                }
+                
+                .legal-representative {
+                    background-color: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    padding: 20px;
+                    margin: 20px 0;
+                }
+                
+                .payment-info {
+                    background-color: #f0f9ff;
+                    border: 1px solid #0ea5e9;
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin: 20px 0;
+                }
+                
+                .witness-section {
+                    margin-top: 40px;
+                    border-top: 1px solid #e5e7eb;
+                    padding-top: 30px;
+                }
+                
+                .document-info {
+                    text-align: center;
+                    border-top: 2px solid #e5e7eb;
+                    padding-top: 20px;
+                    margin-top: 30px;
+                }
+                
+                .legal-footer {
+                    margin-top: 15px;
+                    padding-top: 15px;
+                    border-top: 1px solid #f3f4f6;
+                }
+                
+                .small-text {
+                    font-size: 10px;
+                    color: #9ca3af;
+                    text-align: center;
+                    line-height: 1.4;
+                }
+            ]]></field>
+        </record>
+
+        <!-- Plantilla Premium para Servicios GPS -->
+        <record id="template_premium_gps" model="contract.template">
+            <field name="name">Contrato GPS Premium</field>
+            <field name="code">GPS_PREMIUM</field>
+            <field name="description">Plantilla premium para servicios GPS avanzados</field>
+            <field name="sequence">20</field>
+            <field name="logo_size">large</field>
+            <field name="logo_position">center</field>
+            <field name="primary_color">#1e40af</field>
+            <field name="secondary_color">#64748b</field>
+            <field name="accent_color">#f59e0b</field>
+            <field name="text_color">#1f2937</field>
+            <field name="background_color">#ffffff</field>
+            <field name="font_family">Georgia, serif</field>
+            <field name="font_size_base">13</field>
+            
+            <field name="header_content"><![CDATA[
+                <div class="contract-header premium-header">
+                    <div class="premium-badge">PREMIUM</div>
+                    <h1>CONTRATO DE SERVICIOS GPS PREMIUM</h1>
+                    <p class="subtitle">Acuerdo de servicios avanzados de monitoreo GPS</p>
+                    <div class="contract-details">
+                        <span>Contrato No. ${object.name}</span>
+                        <span>•</span>
+                        <span>Fecha: ${object.date_start}</span>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="custom_css"><![CDATA[
+                .premium-header {
+                    position: relative;
+                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+                    color: white;
+                    padding: 40px 30px;
+                    margin: -20px -20px 30px -20px;
+                    border-radius: 0 0 20px 20px;
+                }
+                
+                .premium-badge {
+                    position: absolute;
+                    top: 15px;
+                    right: 30px;
+                    background-color: #f59e0b;
+                    color: white;
+                    padding: 5px 15px;
+                    border-radius: 15px;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+                
+                .premium-header h1 {
+                    color: white;
+                    margin-bottom: 10px;
+                    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                }
+                
+                .premium-header .subtitle {
+                    color: #e0e7ff;
+                    font-style: italic;
+                }
+                
+                .contract-details {
+                    margin-top: 20px;
+                    font-size: 14px;
+                    color: #cbd5e1;
+                }
+                
+                .contract-details span {
+                    margin: 0 10px;
+                }
+                
+                .party {
+                    background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+                    border: 2px solid #e2e8f0;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                }
+                
+                .financial-table th {
+                    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+                }
+                
+                .highlight-box {
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border-left: 4px solid #f59e0b;
+                }
+            ]]></field>
+        </record>
+    </data>
+</odoo>
