@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista formulario para wizard de contratos -->
+    <record id="view_contract_wizard_form" model="ir.ui.view">
+        <field name="name">contract.wizard.form</field>
+        <field name="model">contract.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Asistente para Crear Contrato">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Crear Nuevo Contrato</h1>
+                        <p>Este asistente le ayudará a crear un contrato paso a paso.</p>
+                    </div>
+                    
+                    <group>
+                        <group string="Información Básica">
+                            <field name="partner_id" options="{'no_create': True}" required="1"/>
+                            <field name="contract_type_id" required="1"/>
+                            <field name="contract_manager_id"/>
+                        </group>
+                        <group string="Fechas">
+                            <field name="date_start"/>
+                            <field name="duration_months"/>
+                            <field name="auto_renewal"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Representante Legal">
+                        <group>
+                            <field name="legal_representative_name" required="1"/>
+                            <field name="legal_representative_position" required="1"/>
+                            <field name="legal_representative_hierarchy"/>
+                        </group>
+                        <group>
+                            <field name="legal_representative_id_number" required="1"/>
+                            <field name="legal_representative_email" required="1"/>
+                            <field name="legal_representative_phone"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Información Financiera">
+                        <group>
+                            <field name="contract_value"/>
+                            <field name="monthly_fee"/>
+                        </group>
+                        <group>
+                            <field name="setup_fee"/>
+                            <field name="deposit"/>
+                            <field name="billing_cycle"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Descripción de Servicios">
+                        <field name="service_description" nolabel="1" placeholder="Describa los servicios o productos incluidos en este contrato..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="create_contract" type="object" string="Crear Contrato" class="oe_highlight"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para el wizard de contratos -->
+    <record id="action_contract_wizard" model="ir.actions.act_window">
+        <field name="name">Crear Contrato</field>
+        <field name="res_model">contract.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_contract_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú principal -->
+    <menuitem id="menu_contract_main" 
+              name="Contratos" 
+              sequence="10" 
+              web_icon="contratos,static/description/icon.png"/>
+
+    <!-- Menú de contratos -->
+    <menuitem id="menu_contract_contracts" 
+              name="Contratos" 
+              parent="menu_contract_main" 
+              sequence="10"/>
+
+    <menuitem id="menu_contract_general" 
+              name="Todos los Contratos" 
+              parent="menu_contract_contracts" 
+              action="action_contract_general" 
+              sequence="10"/>
+
+    <!-- Menú de configuración -->
+    <menuitem id="menu_contract_config" 
+              name="Configuración" 
+              parent="menu_contract_main" 
+              sequence="90"/>
+
+    <menuitem id="menu_contract_types" 
+              name="Tipos de Contrato" 
+              parent="menu_contract_config" 
+              action="action_contract_type" 
+              sequence="10"/>
+
+    <menuitem id="menu_contract_templates" 
+              name="Plantillas de Contrato" 
+              parent="menu_contract_config" 
+              action="action_contract_template" 
+              sequence="20"/>
+</odoo>
