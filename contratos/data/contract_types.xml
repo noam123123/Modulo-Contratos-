@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contract_type_basic" model="contract.type">
+        <field name="name">Contrato Básico</field>
+        <field name="code">BASIC</field>
+        <field name="description">Contrato básico para servicios estándar</field>
+        <field name="monthly_fee">25000</field>
+    </record>
+    
+    <record id="contract_type_premium" model="contract.type">
+        <field name="name">Contrato Premium</field>
+        <field name="code">PREMIUM</field>
+        <field name="description">Contrato premium con servicios avanzados</field>
+        <field name="monthly_fee">45000</field>
+    </record>
+</odoo>
