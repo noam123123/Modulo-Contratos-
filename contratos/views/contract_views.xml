@@ -1,0 +1,114 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario simplificada -->
+    <record id="view_contract_basic_form" model="ir.ui.view">
+        <field name="name">contract.basic.form</field>
+        <field name="model">contract.basic</field>
+        <field name="arch" type="xml">
+            <form string="Contrato">
+                <header>
+                    <button name="action_confirm" string="Confirmar" type="object" 
+                            states="draft" class="oe_highlight"/>
+                    <button name="action_activate" string="Activar" type="object" 
+                            states="confirmed" class="oe_highlight"/>
+                    <button name="action_finish" string="Finalizar" type="object" 
+                            states="active"/>
+                    <button name="action_cancel" string="Cancelar" type="object" 
+                            states="draft,confirmed,active"/>
+                    <button name="action_reset_to_draft" string="Reset a Borrador" type="object" 
+                            states="cancelled"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,active,finished"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group>
+                            <field name="duration_months"/>
+                            <field name="monthly_amount"/>
+                            <field name="total_amount"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                        <page string="Observaciones">
+                            <field name="notes" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista -->
+    <record id="view_contract_basic_tree" model="ir.ui.view">
+        <field name="name">contract.basic.tree</field>
+        <field name="model">contract.basic</field>
+        <field name="arch" type="xml">
+            <tree string="Contratos">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="monthly_amount"/>
+                <field name="total_amount"/>
+                <field name="state" decoration-info="state=='draft'" 
+                       decoration-warning="state=='confirmed'" 
+                       decoration-success="state=='active'"
+                       decoration-muted="state in ('finished','cancelled')"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda -->
+    <record id="view_contract_basic_search" model="ir.ui.view">
+        <field name="name">contract.basic.search</field>
+        <field name="model">contract.basic</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Contratos">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter string="Borradores" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Confirmados" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Activos" name="active" domain="[('state','=','active')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Cliente" name="group_partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Estado" name="group_state" domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Mes de Inicio" name="group_month" domain="[]" context="{'group_by':'date_start:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción principal -->
+    <record id="action_contract_basic" model="ir.actions.act_window">
+        <field name="name">Contratos</field>
+        <field name="res_model">contract.basic</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primer contrato!
+            </p>
+            <p>
+                Los contratos te permiten gestionar acuerdos con tus clientes
+                de manera organizada y profesional.
+            </p>
+        </field>
+    </record>
+</odoo>

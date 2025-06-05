@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Plantilla de reporte para contrato -->
+    <template id="report_contract_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="text-center">
+                                    CONTRATO DE SERVICIOS
+                                </h2>
+                                <h3 class="text-center">
+                                    No. <span t-field="o.name"/>
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>EMPRESA CONTRATANTE:</strong><br/>
+                                <span t-field="o.partner_id.name"/><br/>
+                                <span t-if="o.partner_id.vat">Cédula Jurídica: <span t-field="o.partner_id.vat"/></span><br/>
+                                <span t-if="o.partner_id.street">
+                                    <span t-field="o.partner_id.street"/><br/>
+                                </span>
+                                <span t-if="o.partner_id.city">
+                                    <span t-field="o.partner_id.city"/>
+                                    <span t-if="o.partner_id.state_id">, <span t-field="o.partner_id.state_id.name"/></span>
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <strong>REPRESENTANTE LEGAL:</strong><br/>
+                                <span t-field="o.legal_representative_name"/><br/>
+                                <span t-field="o.legal_representative_position"/><br/>
+                                Cédula: <span t-field="o.legal_representative_id_number"/><br/>
+                                Email: <span t-field="o.legal_representative_email"/>
+                            </div>
+                        </div>
+
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>DATOS DEL CONTRATO</h4>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Tipo de Contrato:</strong></td>
+                                        <td><span t-field="o.contract_type_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Fecha de Inicio:</strong></td>
+                                        <td><span t-field="o.date_start"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Fecha de Vencimiento:</strong></td>
+                                        <td><span t-field="o.date_end"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Duración:</strong></td>
+                                        <td><span t-field="o.duration_months"/> meses</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Valor Total:</strong></td>
+                                        <td><span t-field="o.contract_value" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Renovación Automática:</strong></td>
+                                        <td><span t-if="o.auto_renewal">Sí</span><span t-if="not o.auto_renewal">No</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>DESCRIPCIÓN DE SERVICIOS</h4>
+                                <p><span t-field="o.service_description"/></p>
+                            </div>
+                        </div>
+
+                        <div class="row mt32" t-if="o.contract_line_ids">
+                            <div class="col-12">
+                                <h4>DETALLE DE SERVICIOS</h4>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Descripción</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.contract_line_ids" t-as="line">
+                                            <td><span t-field="line.name"/></td>
+                                            <td><span t-field="line.quantity"/></td>
+                                            <td><span t-field="line.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                            <td><span t-field="line.subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt32" t-if="o.special_conditions">
+                            <div class="col-12">
+                                <h4>CONDICIONES ESPECIALES</h4>
+                                <span t-field="o.special_conditions"/>
+                            </div>
+                        </div>
+
+                        <div class="row mt32">
+                            <div class="col-12">
+                                <h4>TÉRMINOS Y CONDICIONES GENERALES</h4>
+                                <ol>
+                                    <li>Este contrato se rige por las leyes de Costa Rica.</li>
+                                    <li>Cualquier modificación debe hacerse por escrito y firmada por ambas partes.</li>
+                                    <li>Las partes se comprometen a cumplir fielmente las obligaciones establecidas.</li>
+                                    <li>En caso de disputa, se someterán a los tribunales competentes de Costa Rica.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="row mt64">
+                            <div class="col-6 text-center">
+                                <div style="border-bottom: 1px solid black; width: 200px; margin: 0 auto;"></div>
+                                <br/>
+                                <strong><span t-field="o.legal_representative_name"/></strong><br/>
+                                <span t-field="o.legal_representative_position"/><br/>
+                                <span t-field="o.partner_id.name"/>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div style="border-bottom: 1px solid black; width: 200px; margin: 0 auto;"></div>
+                                <br/>
+                                <strong>Representante de la Empresa</strong><br/>
+                                Cargo<br/>
+                                Empresa Prestadora
+                            </div>
+                        </div>
+
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

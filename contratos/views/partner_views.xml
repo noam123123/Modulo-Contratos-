@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extensión de la vista formulario de contactos -->
+    <record id="view_partner_form_contract_extension" model="ir.ui.view">
+        <field name="name">res.partner.form.contract.extension</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar botón de contratos -->
+            <div name="button_box" position="inside">
+                <button name="action_view_contracts" type="object" 
+                        class="oe_stat_button" icon="fa-file-text-o"
+                        context="{'default_partner_id': active_id}">
+                    <field name="contract_count" widget="statinfo" string="Contratos"/>
+                </button>
+            </div>
+            
+            <!-- Agregar campos de representante legal -->
+            <page name="sales_purchases" position="after">
+                <page name="legal_representative" string="Representante Legal">
+                    <group string="Información del Representante Legal">
+                        <group>
+                            <field name="legal_representative_name"/>
+                            <field name="legal_representative_position"/>
+                            <field name="legal_representative_hierarchy"/>
+                        </group>
+                        <group>
+                            <field name="legal_representative_id_number"/>
+                            <field name="legal_representative_email"/>
+                            <field name="legal_representative_phone"/>
+                        </group>
+                    </group>
+                    <group string="Dirección del Representante">
+                        <field name="legal_representative_address" nolabel="1"/>
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>
