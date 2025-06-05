@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para plantillas de contrato -->
+    <record id="view_contract_template_form" model="ir.ui.view">
+        <field name="name">contract.template.form</field>
+        <field name="model">contract.template</field>
+        <field name="arch" type="xml">
+            <form string="Plantilla de Contrato">
+                <header>
+                    <button name="preview_contract" type="object" 
+                            string="Vista Previa" class="btn-primary" 
+                            icon="fa-eye"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Nombre de la plantilla..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- Pestaña de Configuración Visual -->
+                        <page string="Configuración Visual" name="visual">
+                            <group string="Logo de la Empresa">
+                                <field name="company_logo" widget="image" class="oe_avatar"/>
+                                <field name="logo_size"/>
+                                <field name="logo_custom_width" attrs="{'invisible': [('logo_size', '!=', 'custom')]}"/>
+                                <field name="logo_position"/>
+                            </group>
+
+                            <group string="Colores">
+                                <field name="primary_color" widget="color"/>
+                                <field name="secondary_color" widget="color"/>
+                                <field name="accent_color" widget="color"/>
+                                <field name="text_color" widget="color"/>
+                                <field name="background_color" widget="color"/>
+                            </group>
+
+                            <group string="Tipografía">
+                                <field name="font_family"/>
+                                <field name="custom_font_family" attrs="{'invisible': [('font_family', '!=', 'custom')]}"/>
+                                <field name="font_size_base"/>
+                            </group>
+
+                            <group string="CSS Personalizado">
+                                <field name="custom_css" widget="ace" options="{'mode': 'css'}" nolabel="1"/>
+                            </group>
+                        </page>
+
+                        <!-- Pestaña de Contenido -->
+                        <page string="Contenido del Contrato" name="content">
+                            <group string="Encabezado">
+                                <field name="header_content" widget="html" nolabel="1"/>
+                            </group>
+
+                            <group string="Introducción">
+                                <field name="introduction_content" widget="html" nolabel="1"/>
+                            </group>
+
+                            <group string="Términos y Condiciones">
+                                <field name="terms_content" widget="html" nolabel="1"/>
+                            </group>
+
+                            <group string="Detalles Financieros">
+                                <field name="financial_details_content" widget="html" nolabel="1"/>
+                            </group>
+
+                            <group string="Condiciones Especiales">
+                                <field name="special_conditions_content" widget="html" nolabel="1"/>
+                            </group>
+
+                            <group string="Área de Firmas">
+                                <field name="signature_content" widget="html" nolabel="1"/>
+                            </group>
+
+                            <group string="Pie de Página">
+                                <field name="footer_content" widget="html" nolabel="1"/>
+                            </group>
+                        </page>
+
+                        <!-- Pestaña de Secciones -->
+                        <page string="Configuración de Secciones" name="sections">
+                            <field name="section_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="content_field"/>
+                                    <field name="active"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <!-- Pestaña de Ayuda -->
+                        <page string="Ayuda y Variables" name="help">
+                            <div class="alert alert-info">
+                                <h4>Variables Disponibles</h4>
+                                <p>Puede usar las siguientes variables dinámicas en el contenido:</p>
+                                <ul>
+                                    <li><code>${object.name}</code> - Número del contrato</li>
+                                    <li><code>${object.partner_id.name}</code> - Nombre del cliente</li>
+                                    <li><code>${object.partner_id.vat}</code> - Identificación del cliente</li>
+                                    <li><code>${object.partner_id.contact_address}</code> - Dirección del cliente</li>
+                                    <li><code>${object.legal_representative_name}</code> - Nombre del representante legal</li>
+                                    <li><code>${object.legal_representative_position}</code> - Cargo del representante</li>
+                                    <li><code>${object.legal_representative_id_number}</code> - Cédula del representante</li>
+                                    <li><code>${object.service_description}</code> - Descripción de servicios</li>
+                                    <li><code>${object.contract_value}</code> - Valor total del contrato</li>
+                                    <li><code>${object.monthly_fee}</code> - Tarifa mensual</li>
+                                    <li><code>${object.date_start}</code> - Fecha de inicio</li>
+                                    <li><code>${object.date_end}</code> - Fecha de vencimiento</li>
+                                    <li><code>${object.duration_months}</code> - Duración en meses</li>
+                                    <li><code>${object.currency_id.symbol}</code> - Símbolo de moneda</li>
+                                    <li><code>${object.env.company.name}</code> - Nombre de su empresa</li>
+                                    <li><code>${object.env.company.vat}</code> - Identificación de su empresa</li>
+                                    <li><code>${datetime.now().strftime('%d/%m/%Y')}</code> - Fecha actual</li>
+                                </ul>
+
+                                <h4>Condicionales</h4>
+                                <p>Puede usar condicionales simples:</p>
+                                <pre>% if object.auto_renewal:
+    Este contrato se renueva automáticamente
+% endif</pre>
+
+                                <h4>Métodos Útiles</h4>
+                                <ul>
+                                    <li><code>${object.get_billing_cycle_display()}</code> - Ciclo de facturación en texto</li>
+                                    <li><code>${object.get_payment_method_display()}</code> - Método de pago en texto</li>
+                                    <li><code>${object.get_state_display()}</code> - Estado del contrato en texto</li>
+                                </ul>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para plantillas -->
+    <record id="view_contract_template_tree" model="ir.ui.view">
+        <field name="name">contract.template.tree</field>
+        <field name="model">contract.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda -->
+    <record id="view_contract_template_search" model="ir.ui.view">
+        <field name="name">contract.template.search</field>
+        <field name="model">contract.template</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <filter string="Activas" name="active" domain="[('active','=',True)]"/>
+                <filter string="Inactivas" name="inactive" domain="[('active','=',False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_active" context="{'group_by':'active'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción de ventana -->
+    <record id="action_contract_template" model="ir.actions.act_window">
+        <field name="name">Plantillas de Contrato</field>
+        <field name="res_model">contract.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Cree su primera plantilla de contrato!
+            </p>
+            <p>
+                Las plantillas le permiten personalizar completamente la apariencia
+                y contenido de sus contratos.
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para vista previa -->
+    <record id="view_contract_template_preview_form" model="ir.ui.view">
+        <field name="name">contract.template.preview.form</field>
+        <field name="model">contract.template.preview</field>
+        <field name="arch" type="xml">
+            <form string="Vista Previa del Contrato">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Vista Previa - <field name="template_id" readonly="1"/></h1>
+                    </div>
+                    <field name="html_content" widget="html" nolabel="1" readonly="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Menú en Configuración -->
+    <menuitem id="menu_contract_template"
+              name="Plantillas de Contrato"
+              parent="menu_contract_configuration"
+              action="action_contract_template"
+              sequence="20"/>
+</odoo>
