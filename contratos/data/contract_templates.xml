@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Plantilla Básica para Servicios Generales -->
+        <record id="template_basic_services" model="contract.template">
+            <field name="name">Contrato Servicios Generales</field>
+            <field name="code">SERVICES_BASIC</field>
+            <field name="description">Plantilla estándar para servicios generales</field>
+            <field name="sequence">10</field>
+            <field name="template_content"><![CDATA[
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Contrato de Servicios - ${object.name}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .section { margin-bottom: 20px; }
+                        .signature-area { margin-top: 50px; }
+                        .signature-line { border-bottom: 1px solid #000; width: 300px; margin: 40px auto; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>CONTRATO DE SERVICIOS GENERALES</h1>
+                        <h2>No. ${object.name}</h2>
+                    </div>
+
+                    <div class="section">
+                        <h3>PARTES DEL CONTRATO</h3>
+                        <p><strong>EMPRESA CONTRATANTE:</strong> ${object.partner_id.name}</p>
+                        <p><strong>Cédula Jurídica:</strong> ${object.partner_id.vat or 'N/A'}</p>
+                        <p><strong>Representante Legal:</strong> ${object.legal_representative_name}</p>
+                        <p><strong>Cargo:</strong> ${object.legal_representative_position}</p>
+                        <p><strong>Cédula:</strong> ${object.legal_representative_id_number}</p>
+                        <p><strong>Email:</strong> ${object.legal_representative_email}</p>
+                        <p><strong>Dirección:</strong> ${object.partner_id.street or ''}</p>
+                    </div>
+
+                    <div class="section">
+                        <h3>DATOS DEL CONTRATO</h3>
+                        <table>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Detalle</th>
+                            </tr>
+                            <tr>
+                                <td>Tipo de Contrato</td>
+                                <td>${object.contract_type_id.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de Inicio</td>
+                                <td>${object.date_start}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de Vencimiento</td>
+                                <td>${object.date_end}</td>
+                            </tr>
+                            <tr>
+                                <td>Duración</td>
+                                <td>${object.duration_months} meses</td>
+                            </tr>
+                            <tr>
+                                <td>Valor Total</td>
+                                <td>${object.contract_value} ${object.currency_id.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Renovación Automática</td>
+                                <td>${'Sí' if object.auto_renewal else 'No'}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>DESCRIPCIÓN DE SERVICIOS</h3>
+                        <p>${object.service_description}</p>
+                    </div>
+
+                    <div class="section">
+                        <h3>CONDICIONES ESPECIALES</h3>
+                        ${object.special_conditions or 'No aplican condiciones especiales.'}
+                    </div>
+
+                    <div class="section">
+                        <h3>TÉRMINOS Y CONDICIONES GENERALES</h3>
+                        <p>1. Este contrato se rige por las leyes de Costa Rica.</p>
+                        <p>2. Cualquier modificación debe hacerse por escrito y firmada por ambas partes.</p>
+                        <p>3. Las partes se comprometen a cumplir fielmente las obligaciones establecidas.</p>
+                        <p>4. En caso de disputa, se someterán a los tribunales competentes de Costa Rica.</p>
+                    </div>
+
+                    <div class="signature-area">
+                        <p><strong>Fecha de firma:</strong> _________________</p>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-top: 60px;">
+                            <div style="text-align: center;">
+                                <div class="signature-line"></div>
+                                <p>${object.legal_representative_name}<br/>
+                                ${object.legal_representative_position}<br/>
+                                ${object.partner_id.name}</p>
+                            </div>
+                            
+                            <div style="text-align: center;">
+                                <div class="signature-line"></div>
+                                <p>Representante de la Empresa<br/>
+                                Cargo<br/>
+                                Empresa Prestadora</p>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            ]]></field>
+        </record>
+    </data>
+</odoo>
