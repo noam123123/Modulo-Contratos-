@@ -1,0 +1,52 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_contracts_main" 
+              name="Contratos" 
+              sequence="30"
+              web_icon="contratos,static/description/icon.png"/>
+
+    <!-- Contracts submenu -->
+    <menuitem id="menu_contracts_contracts" 
+              name="Contratos" 
+              parent="menu_contracts_main" 
+              sequence="10"/>
+
+    <!-- Contract menu item -->
+    <menuitem id="menu_contract_general" 
+              name="Todos los Contratos" 
+              parent="menu_contracts_contracts" 
+              action="action_contract_general" 
+              sequence="10"/>
+
+    <!-- Configuration submenu -->
+    <menuitem id="menu_contracts_config" 
+              name="Configuración" 
+              parent="menu_contracts_main" 
+              sequence="90"/>
+
+    <!-- Contract Types menu item -->
+    <menuitem id="menu_contract_type" 
+              name="Tipos de Contrato" 
+              parent="menu_contracts_config" 
+              action="action_contract_type" 
+              sequence="10"/>
+
+    <!-- Contract Action -->
+    <record id="action_contract_general" model="ir.actions.act_window">
+        <field name="name">Contratos</field>
+        <field name="res_model">contract.general</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_contract_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Cree su primer contrato!
+            </p>
+            <p>
+                Gestione sus contratos de servicios GPS de manera eficiente.
+            </p>
+        </field>
+    </record>
+</odoo>
