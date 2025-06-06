@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contract_type_basic" model="contract.type">
+        <field name="name">Servicio GPS Básico</field>
+        <field name="code">GPS_BASIC</field>
+        <field name="description">Servicio GPS básico con monitoreo estándar</field>
+        <field name="monthly_fee">25000</field>
+        <field name="default_duration">12</field>
+    </record>
+
+    <record id="contract_type_premium" model="contract.type">
+        <field name="name">Servicio GPS Premium</field>
+        <field name="code">GPS_PREMIUM</field>
+        <field name="description">Servicio GPS premium con funciones avanzadas</field>
+        <field name="monthly_fee">40000</field>
+        <field name="default_duration">24</field>
+    </record>
+
+    <record id="contract_type_device" model="contract.type">
+        <field name="name">Venta de Dispositivo</field>
+        <field name="code">DEVICE_SALE</field>
+        <field name="description">Contrato para venta de dispositivos GPS</field>
+        <field name="monthly_fee">0</field>
+        <field name="default_duration">1</field>
+    </record>
+</odoo>
