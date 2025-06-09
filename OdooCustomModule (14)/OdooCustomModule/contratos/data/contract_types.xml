@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="contract_type_service" model="contract.type">
+            <field name="name">Contrato de Servicios</field>
+            <field name="code">SERVICES</field>
+            <field name="description">Contrato general para prestación de servicios</field>
+            <field name="default_duration">12</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="contract_type_maintenance" model="contract.type">
+            <field name="name">Contrato de Mantenimiento</field>
+            <field name="code">MAINTENANCE</field>
+            <field name="description">Contrato para servicios de mantenimiento y soporte</field>
+            <field name="default_duration">12</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="contract_type_supply" model="contract.type">
+            <field name="name">Contrato de Suministro</field>
+            <field name="code">SUPPLY</field>
+            <field name="description">Contrato para suministro de productos o equipos</field>
+            <field name="default_duration">6</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="contract_type_consulting" model="contract.type">
+            <field name="name">Contrato de Consultoría</field>
+            <field name="code">CONSULTING</field>
+            <field name="description">Contrato para servicios de consultoría especializada</field>
+            <field name="default_duration">3</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>
