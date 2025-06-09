@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="contract_type_basic" model="contract.type">
-        <field name="name">Servicio GPS Básico</field>
+        <field name="name">Contratos</field>
         <field name="code">GPS_BASIC</field>
-        <field name="description">Servicio GPS básico con monitoreo estándar</field>
+        <field name="description">Modulo de Contratos</field>
         <field name="monthly_fee">25000</field>
         <field name="default_duration">12</field>
     </record>
